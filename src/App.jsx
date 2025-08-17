@@ -1,7 +1,7 @@
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import FridaySchedule from "./components/FridaySchedule";
-import Events from "./components/Events";
+// import Events from "./components/Events";
 import "./App.css";
 import { useEffect, useState } from "react";
 
@@ -19,8 +19,8 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const spreadsheetId = "1LerbBiT3_WqMWEp3Kfl8YcWZfRkg_ZF6EJuG35DAwbo";
-      const apiKey = "AIzaSyAkPiV9Fz9CnYIh-8MU_5vZF5IhdIjTSbA";
+      const spreadsheetId = import.meta.env.VITE_SPREADSHEET_ID;
+      const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
       const range = "Sheet1!A2:C10";
 
       const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${apiKey}`;
@@ -114,11 +114,14 @@ function App() {
         {/* Events */}
         <div className="max-w-[80%] mx-auto mt-7">
           <div className="text-center mb-6">
-            <h2 className="text-3xl font-medium">Acara Terkini</h2>
+            <h2 className="text-3xl font-medium">Berita Terkini</h2>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {data.map((row, index) => (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {data
+              .slice(-4)
+              .reverse()
+              .map((row, index) => (
               <div
                 key={index}
                 className="rounded-lg overflow-hidden shadow-md bg-white"
@@ -134,7 +137,7 @@ function App() {
                     <span className="text-sm text-gray-400">{row.date}</span>
                   </div>
                   <p className="text-gray-700 text-sm">
-                    {truncateContent(row.content, 3)}
+                    {truncateContent(row.content, 1)}
                   </p>
                 </div>
               </div>
